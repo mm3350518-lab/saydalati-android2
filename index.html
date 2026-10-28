@@ -1,644 +1,1148 @@
 
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#159FCA">
-<meta name="description" content="صيدليتي - منصة تعليمية للصيدلة والأدوية والحالات السريرية">
-<title>صيدليتي | My Pharmacy</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#eaf9ff">
+<title>ILMO Health | Clinical Pharmacy Cases</title>
 <style>
-:root {
-  --bg: #F3FBFF;
-  --card: #FFFFFF;
-  --primary: #159FCA;
-  --primary-dark: #087FA5;
-  --soft: #E4F7FF;
-  --text: #173449;
-  --muted: #607B8C;
-  --border: #D4EAF3;
-  --good: #168653;
-  --bad: #C43D4B;
-  --shadow: 0 5px 20px rgba(21,100,130,.07);
+:root{
+  --blue:#087fa8;
+  --cyan:#20b8d5;
+  --light:#eaf9ff;
+  --white:#fff;
+  --ink:#173449;
+  --muted:#617889;
+  --border:#d7edf5;
+  --green:#16845b;
+  --red:#bf4242;
 }
-
-* { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, Tahoma, Arial, sans-serif;
-  line-height: 1.8;
-  padding-bottom: calc(82px + env(safe-area-inset-bottom));
+*{box-sizing:border-box}
+body{
+  margin:0;background:#f4fbfe;color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;line-height:1.6
 }
-
-button, input { font: inherit; }
-button { cursor: pointer; }
-button:focus-visible, input:focus-visible {
-  outline: 3px solid #79D7F2;
-  outline-offset: 3px;
+header{
+  background:linear-gradient(135deg,#e8faff,#fff);
+  border-bottom:1px solid var(--border);padding:22px 16px;text-align:center
 }
-
-/* شاشة البداية */
-#splash {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: linear-gradient(145deg,#FFFFFF,#DDF5FF);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  transition: opacity .4s ease;
+.logo{
+  width:64px;height:64px;border-radius:20px;background:#fff;
+  border:2px solid #bcebf5;color:var(--blue);display:flex;
+  align-items:center;justify-content:center;font-weight:900;
+  font-size:22px;margin:0 auto 10px;box-shadow:0 5px 18px #087fa815
 }
-
-.logo {
-  width: 112px;
-  height: 112px;
-  border-radius: 32px;
-  background: linear-gradient(145deg,#159FCA,#087FA5);
-  color: white;
-  display: grid;
-  place-items: center;
-  font-size: 57px;
-  box-shadow: 0 12px 35px #159FCA40;
-  margin-bottom: 15px;
+header h1{margin:0;color:var(--blue);font-size:27px}
+header p{margin:5px 0;color:var(--muted)}
+main{max-width:1000px;margin:auto;padding:16px}
+.panel{
+  background:#fff;border:1px solid var(--border);border-radius:18px;
+  padding:16px;margin-bottom:16px;box-shadow:0 5px 20px #16455b08
 }
-
-#splash h1 { margin: 0; font-size: 30px; }
-#splash p { color: var(--muted); margin: 3px 0; }
-.loader {
-  width: 36px;
-  height: 36px;
-  border: 4px solid #CBEAF6;
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin .8s linear infinite;
-  margin-top: 22px;
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--light);border-radius:13px;padding:12px;text-align:center}
+.stat strong{display:block;font-size:24px;color:var(--blue)}
+.stat span{font-size:12px;color:var(--muted)}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input,select,button{
+  font:inherit;border-radius:11px;padding:11px;border:1px solid var(--border);
+  background:#fff;color:var(--ink);min-width:0
 }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-header {
-  background: rgba(255,255,255,.96);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  backdrop-filter: blur(12px);
+button{cursor:pointer;font-weight:bold}
+button.primary{background:var(--blue);color:white;border-color:var(--blue)}
+button.secondary{background:var(--light);color:var(--blue)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.topline{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.pill{display:inline-block;background:var(--light);color:var(--blue);
+  padding:4px 10px;border-radius:30px;font-size:12px;font-weight:bold}
+.case-title{font-size:22px;margin:12px 0 5px}
+.vignette{background:#f6fcff;border-left:4px solid var(--cyan);
+  padding:13px;border-radius:10px;margin:14px 0}
+.options{display:grid;gap:9px}
+.option{
+  display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;
+  background:#fff;border:1px solid var(--border);padding:13px
 }
-
-.head-row {
-  max-width: 760px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-icon {
-  background: var(--soft);
-  color: var(--primary-dark);
-  border-radius: 13px;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  font-size: 25px;
-}
-
-.brand h1 { font-size: 18px; margin: 0; }
-.brand small { display: block; color: var(--muted); font-size: 11px; }
-
-main {
-  max-width: 760px;
-  margin: auto;
-  padding: 16px;
-}
-
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 19px;
-  padding: 17px;
-  margin-bottom: 15px;
-  box-shadow: var(--shadow);
-}
-
-.hero {
-  background: linear-gradient(135deg,#E1F7FF,#FFFFFF);
-  border: 1px solid #C8EBF8;
-  padding: 23px 19px;
-}
-
-.hero h2 { font-size: 25px; line-height: 1.5; margin: 0 0 7px; }
-.hero p { color: var(--muted); margin: 0 0 15px; }
-
-h2 { font-size: 19px; margin: 0 0 10px; }
-h3 { font-size: 16px; margin: 0 0 7px; }
-
-.muted { color: var(--muted); font-size: 13px; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 11px;
-}
-
-.tile {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 15px;
-  text-align: right;
-  color: var(--text);
-  min-height: 120px;
-  transition: transform .15s;
-}
-.tile:active { transform: scale(.98); }
-.tile .emoji { font-size: 28px; display: block; }
-.tile strong { display: block; margin: 4px 0; }
-.tile small { color: var(--muted); }
-
-.btn {
-  border: 0;
-  background: var(--primary);
-  color: white;
-  padding: 10px 15px;
-  border-radius: 12px;
-  font-weight: 650;
-}
-.btn:hover { background: var(--primary-dark); }
-.btn.light {
-  background: var(--soft);
-  color: var(--primary-dark);
-}
-.btn.danger {
-  background: #FFF0F1;
-  color: var(--bad);
-}
-
-input {
-  display: block;
-  width: 100%;
-  border: 1px solid var(--border);
-  background: white;
-  color: var(--text);
-  border-radius: 12px;
-  padding: 12px;
-  margin: 10px 0;
-}
-
-.drug {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 13px;
-  margin: 10px 0;
-  background: white;
-}
-
-.drug-name { font-weight: 750; font-size: 16px; }
-.drug small { color: var(--muted); }
-
-details { border-top: 1px solid var(--border); margin-top: 10px; padding-top: 8px; }
-summary { cursor: pointer; font-weight: 650; }
-dt { color: var(--primary-dark); font-weight: 700; margin-top: 9px; }
-dd { margin: 0; }
-
-.option {
-  display: block;
-  width: 100%;
-  text-align: right;
-  background: white;
-  color: var(--text);
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-  margin: 9px 0;
-}
-.option:disabled { opacity: .55; }
-.option.correct { border-color: var(--good); background: #F0FFF7; }
-.option.wrong { border-color: var(--bad); background: #FFF4F4; }
-
-.notice {
-  background: #FFF9E8;
-  border: 1px solid #F1DFAD;
-  border-radius: 12px;
-  padding: 12px;
-  font-size: 13px;
-}
-
-.source {
-  display: block;
-  color: var(--primary-dark);
-  text-decoration: none;
-  background: var(--soft);
-  border-radius: 12px;
-  padding: 11px 13px;
-  margin: 9px 0;
-  overflow-wrap: anywhere;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid var(--border);
-  padding: 12px 0;
-}
-.row:last-child { border-bottom: 0; }
-
-.badge {
-  background: var(--soft);
-  color: var(--primary-dark);
-  border-radius: 30px;
-  padding: 3px 10px;
-  font-size: 12px;
-}
-
-.progress {
-  height: 10px;
-  border-radius: 10px;
-  background: var(--border);
-  overflow: hidden;
-}
-.progress div {
-  height: 100%;
-  background: var(--primary);
-  transition: width .2s;
-}
-
-nav {
-  position: fixed;
-  z-index: 30;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-around;
-  background: rgba(255,255,255,.97);
-  border-top: 1px solid var(--border);
-  padding: 7px 3px calc(7px + env(safe-area-inset-bottom));
-  backdrop-filter: blur(12px);
-}
-
-nav button {
-  background: transparent;
-  border: 0;
-  color: var(--muted);
-  flex: 1;
-  padding: 4px 1px;
-  font-size: 11px;
-}
-nav button span { display: block; font-size: 21px; }
-nav button.active { color: var(--primary-dark); font-weight: 800; }
-
-footer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
-  padding: 12px;
-}
-
-.hidden { display: none !important; }
-
-@media (max-width: 360px) {
-  main { padding: 10px; }
-  .card { padding: 13px; }
-  .tile { padding: 11px; }
+.option .letter{font-weight:bold;color:var(--blue);min-width:22px}
+.option.selected{border-color:var(--blue);background:#eefaff}
+.option.correct{border-color:var(--green);background:#effaf4}
+.option.incorrect{border-color:var(--red);background:#fff3f3}
+.feedback{padding:14px;border-radius:12px;margin-top:14px}
+.feedback.good{background:#effaf4;border:1px solid #bde8d1}
+.feedback.bad{background:#fff5f3;border:1px solid #f2d0c9}
+.feedback h3{margin:0 0 5px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.actions button{flex:1}
+.small{font-size:13px;color:var(--muted)}
+footer{text-align:center;padding:22px;color:var(--muted);font-size:12px}
+.hidden{display:none!important}
+.progress{height:7px;background:#e4f2f7;border-radius:20px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;background:var(--cyan);width:0}
+.reference a{color:var(--blue);overflow-wrap:anywhere}
+@media(max-width:560px){
+ .controls{grid-template-columns:1fr}
+ main{padding:10px}
+ .panel{padding:13px}
+ header h1{font-size:23px}
+ .case-title{font-size:19px}
 }
 </style>
 </head>
-
 <body>
 
-<!-- شاشة البداية: استبدل الرمز بصورة شعارك لاحقاً -->
-<div id="splash">
-  <div class="logo" aria-label="شعار صيدليتي">⚕</div>
-  <h1>صيدليتي</h1>
-  <p>My Pharmacy</p>
-  <p>التعلّم الصيدلاني بطريقة ذكية</p>
-  <div class="loader"></div>
-</div>
-
 <header>
-  <div class="head-row">
-    <div class="brand">
-      <div class="brand-icon">⚕</div>
-      <div>
-        <h1>صيدليتي</h1>
-        <small>منصتك التعليمية الصيدلانية</small>
-      </div>
-    </div>
-    <button class="btn light" onclick="saveProgress()">💾 حفظ</button>
-  </div>
+  <div class="logo">ILMO</div>
+  <h1>ILMO Health</h1>
+  <p>Clinical Pharmacy Case Library</p>
+  <p>LEARN · HEALTH · GROW</p>
 </header>
 
-<main id="app"></main>
+<main>
+  <section class="panel">
+    <div class="stats">
+      <div class="stat"><strong id="totalCount">300</strong><span>Total Cases</span></div>
+      <div class="stat"><strong id="answeredCount">0</strong><span>Answered</span></div>
+      <div class="stat"><strong id="scoreCount">0%</strong><span>Accuracy</span></div>
+    </div>
+    <div class="progress"><div id="progressBar"></div></div>
+    <p class="small">Choose a system, read the case, select an answer, and review the explanation.</p>
+  </section>
 
-<nav>
-  <button data-tab="home" onclick="showTab('home')"><span>🏠</span>الرئيسية</button>
-  <button data-tab="cases" onclick="showTab('cases')"><span>🩺</span>الحالات</button>
-  <button data-tab="drugs" onclick="showTab('drugs')"><span>💊</span>الأدوية</button>
-  <button data-tab="inventory" onclick="showTab('inventory')"><span>📦</span>المخزون</button>
-  <button data-tab="progress" onclick="showTab('progress')"><span>🏆</span>التقدم</button>
-</nav>
+  <section class="panel">
+    <h2>Find a Clinical Case</h2>
+    <div class="controls">
+      <input id="searchInput" type="search" placeholder="Search cases or conditions...">
+      <select id="systemFilter">
+        <option value="all">All Body Systems</option>
+      </select>
+      <select id="difficultyFilter">
+        <option value="all">All difficulty levels</option>
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+      <select id="sortFilter">
+        <option value="default">Default order</option>
+        <option value="title">Title A–Z</option>
+        <option value="system">System A–Z</option>
+      </select>
+    </div>
+    <p id="resultCount" class="small"></p>
+  </section>
+
+  <section class="panel">
+    <div class="topline">
+      <span class="pill" id="caseNumber">Case 1</span>
+      <span class="pill" id="difficultyPill">Beginner</span>
+    </div>
+    <h2 class="case-title" id="caseTitle">Loading case...</h2>
+    <p class="small" id="caseSystem"></p>
+    <div class="vignette" id="caseVignette"></div>
+    <h3 id="questionText">What is the most appropriate answer?</h3>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+    <div class="actions">
+      <button class="secondary" id="previousBtn">← Previous</button>
+      <button class="primary" id="checkBtn">Check Answer</button>
+      <button class="secondary" id="nextBtn">Next →</button>
+    </div>
+    <div class="actions">
+      <button class="secondary" id="randomBtn">Random Case</button>
+      <button class="secondary" id="resetBtn">Reset Progress</button>
+    </div>
+  </section>
+
+  <section class="panel reference">
+    <h2>Recommended References</h2>
+    <ul>
+      <li><a href="https://shop.elsevier.com/books/community-pharmacy/rutter/978-0-443-24619-7" target="_blank" rel="noopener">Community Pharmacy: Symptoms, Diagnosis and Treatment — Paul Rutter</a></li>
+      <li><a href="https://www.pharmacist.com/" target="_blank" rel="noopener">American Pharmacists Association (APhA)</a></li>
+      <li><a href="https://accesspharmacy.mhmedical.com/" target="_blank" rel="noopener">AccessPharmacy — Medical and pharmacy references</a></li>
+      <li><a href="https://www.mheducation.com/highered/mhp/product/pharmacotherapy-casebook-patient-focused-approach-eleventh-edition.html" target="_blank" rel="noopener">Pharmacotherapy Casebook: A Patient-Focused Approach</a></li>
+      <li><a href="https://www.elsevier.com/" target="_blank" rel="noopener">Elsevier — Clinical Pharmacy and Therapeutics resources</a></li>
+      <li><a href="https://www.medscape.com/" target="_blank" rel="noopener">Medscape — Clinical reference</a></li>
+    </ul>
+    <p class="small">The scenarios in this application are educational examples. They are not copied from the books listed above. Consult the original references and current local guidelines before applying clinical recommendations.</p>
+  </section>
+</main>
+
+<footer>
+  ILMO Health · Clinical learning resource<br>
+  Educational use only — not a substitute for professional medical assessment.
+</footer>
 
 <script>
 "use strict";
 
-const SAVE_KEY = "saydalati_medical_v3";
+/*
+  CASE LIBRARY
+  Each template contains a clinical scenario, the best answer,
+  three distractors, an explanation, and a pharmacist action.
+  Templates are used to create 300 practice entries with varied
+  case presentation and difficulty labels.
+*/
 
-const cases = window.ILMO_CASES || [];
+const templates = [
+{
+s:"Cardiovascular",t:"Suspected Acute Coronary Syndrome",
+v:"A 58-year-old patient reports central chest pressure radiating to the left arm, sweating, and nausea. Symptoms began 20 minutes ago.",
+q:"What is the most appropriate immediate action?",
+a:"Activate emergency medical services immediately.",
+w:["Recommend an antacid and review in 48 hours.","Suggest exercise to assess symptom severity.","Provide an over-the-counter painkiller and discharge."],
+e:"Possible acute coronary syndrome is a medical emergency. Prompt assessment and treatment are time-critical.",
+p:"Arrange emergency transfer; do not delay referral for routine pharmacy assessment."
+},
+{
+s:"Cardiovascular",t:"Possible Heart Failure",
+v:"A 72-year-old patient has worsening breathlessness, ankle swelling, and difficulty sleeping flat.",
+q:"Which action is most appropriate?",
+a:"Arrange urgent clinical assessment for possible heart failure.",
+w:["Recommend increasing salt intake.","Suggest a cough suppressant only.","Advise the patient to stop all prescribed medicines."],
+e:"Breathlessness, peripheral edema, and orthopnea may indicate heart failure and need prompt assessment.",
+p:"Check severity and refer urgently, especially if breathlessness is severe or occurs at rest."
+},
+{
+s:"Cardiovascular",t:"Warfarin and Bleeding",
+v:"A patient taking warfarin reports black, tarry stools and dizziness.",
+q:"What should the pharmacist recommend?",
+a:"Seek emergency medical assessment immediately.",
+w:["Take an additional warfarin dose.","Wait a week and monitor symptoms.","Start aspirin for the dizziness."],
+e:"Melena may indicate gastrointestinal bleeding. Anticoagulant use increases the risk of serious bleeding.",
+p:"Urgent emergency referral; communicate the anticoagulant history."
+},
+{
+s:"Cardiovascular",t:"ACE Inhibitor and Persistent Cough",
+v:"A patient taking lisinopril develops a persistent dry cough without fever or sputum.",
+q:"Which medicine-related issue is most likely?",
+a:"An ACE inhibitor-associated cough.",
+w:["A definite bacterial pneumonia.","An immediate indication for antibiotics.","A symptom proving heart failure."],
+e:"ACE inhibitors can cause a persistent dry cough. Other causes should still be considered.",
+p:"Review symptoms and discuss an alternative antihypertensive with the prescriber; do not independently discontinue essential therapy without a plan."
+},
+{
+s:"Cardiovascular",t:"Possible Statin-Associated Myopathy",
+v:"A patient taking a statin reports new severe muscle pain and weakness with dark urine.",
+q:"What is the best next step?",
+a:"Urgent medical evaluation for possible serious muscle injury.",
+w:["Recommend strenuous exercise.","Reassure the patient that dark urine is expected.","Add another statin without review."],
+e:"Severe muscle symptoms with dark urine may indicate rhabdomyolysis, which requires urgent evaluation.",
+p:"Urgently refer and provide the prescriber with the medicine and symptom history."
+},
+{
+s:"Respiratory",t:"Asthma Exacerbation",
+v:"A patient with asthma is struggling to speak in full sentences and has marked breathlessness.",
+q:"What is the most appropriate action?",
+a:"Activate emergency medical services.",
+w:["Book a routine appointment next month.","Recommend an oral antihistamine alone.","Advise the patient to lie flat and wait."],
+e:"Severe breathlessness and difficulty speaking are warning signs of a potentially life-threatening asthma attack.",
+p:"Follow local emergency asthma guidance and arrange immediate emergency care."
+},
+{
+s:"Respiratory",t:"Incorrect Inhaler Technique",
+v:"A patient using a pressurised metered-dose inhaler says the medicine does not seem to help.",
+q:"What should the pharmacist assess first?",
+a:"Inhaler technique, adherence, and symptom control.",
+w:["Double every prescribed dose immediately.","Stop the controller inhaler.","Assume the medicine is ineffective without assessment."],
+e:"Poor inhaler technique and adherence can reduce the amount of medicine reaching the lungs.",
+p:"Demonstrate the correct technique, consider a spacer when appropriate, and refer if control remains poor."
+},
+{
+s:"Respiratory",t:"Possible Pneumonia",
+v:"A 70-year-old patient has fever, productive cough, confusion, and rapid breathing.",
+q:"What is the best course of action?",
+a:"Arrange urgent same-day emergency assessment.",
+w:["Recommend cough sweets only.","Delay assessment for two weeks.","Start leftover antibiotics without evaluation."],
+e:"Older age, confusion, fever, and rapid breathing may indicate serious infection.",
+p:"Urgent assessment is needed; emergency care is appropriate if the patient is acutely unwell."
+},
+{
+s:"Respiratory",t:"Allergic Rhinitis",
+v:"A patient has sneezing, nasal itching, clear discharge, and itchy eyes every spring.",
+q:"Which option is generally appropriate for uncomplicated symptoms?",
+a:"A suitable non-sedating antihistamine or intranasal corticosteroid, chosen for the patient.",
+w:["Routine oral antibiotics.","Long-term topical nasal decongestant without review.","An oral corticosteroid course for every episode."],
+e:"Seasonal allergic rhinitis commonly responds to antihistamines and/or intranasal corticosteroids.",
+p:"Check age, pregnancy, comorbidities, other medicines, and correct administration."
+},
+{
+s:"Respiratory",t:"Overuse of Nasal Decongestant",
+v:"A patient has used a topical nasal decongestant spray every day for two weeks and now reports worse congestion.",
+q:"What may explain the worsening congestion?",
+a:"Rebound congestion from prolonged topical decongestant use.",
+w:["A guaranteed bacterial sinus infection.","A need to increase the spray indefinitely.","An expected effect requiring no action."],
+e:"Prolonged use of topical nasal decongestants can cause rhinitis medicamentosa.",
+p:"Explain the possible rebound effect and arrange a suitable alternative plan, with referral if needed."
+},
+{
+s:"Gastrointestinal",t:"Possible Upper GI Bleeding",
+v:"A patient reports vomiting blood and feeling faint.",
+q:"What should happen next?",
+a:"Emergency medical assessment immediately.",
+w:["Recommend an antacid and observe for a week.","Suggest a high-fibre diet only.","Recommend ibuprofen for discomfort."],
+e:"Haematemesis and faintness may signal significant gastrointestinal bleeding.",
+p:"Call emergency services and do not delay transfer."
+},
+{
+s:"Gastrointestinal",t:"Acute Diarrhea and Dehydration",
+v:"An adult with diarrhea has very little urine, dizziness on standing, and difficulty keeping fluids down.",
+q:"What is the most appropriate action?",
+a:"Urgent medical assessment for significant dehydration.",
+w:["Use an antidiarrheal regardless of symptoms.","Avoid all fluids.","Wait several days despite worsening symptoms."],
+e:"Reduced urine output and postural dizziness can indicate clinically significant dehydration.",
+p:"Arrange prompt assessment; oral rehydration may be appropriate only if the patient can safely drink while awaiting care."
+},
+{
+s:"Gastrointestinal",t:"Oral Rehydration",
+v:"A generally well adult has mild short-duration diarrhea and can drink fluids.",
+q:"Which supportive measure is usually most appropriate?",
+a:"Use oral rehydration solution as directed and maintain fluids.",
+w:["Drink only undiluted fruit juice in large quantities.","Stop drinking until diarrhea ends.","Take antibiotics routinely."],
+e:"Oral rehydration solution helps replace water and electrolytes lost through diarrhea.",
+p:"Explain preparation and use; refer for blood in stool, severe pain, dehydration, or persistent symptoms."
+},
+{
+s:"Gastrointestinal",t:"Possible Appendicitis",
+v:"A patient has worsening abdominal pain that began near the navel and moved to the lower right abdomen, with nausea and fever.",
+q:"What is the best recommendation?",
+a:"Urgent emergency assessment for possible appendicitis.",
+w:["Treat with a laxative at home.","Use an antacid and ignore progression.","Wait several days before seeking help."],
+e:"Migrating right lower abdominal pain with fever can indicate appendicitis or another urgent abdominal condition.",
+p:"Refer urgently; avoid delaying assessment with self-treatment."
+},
+{
+s:"Gastrointestinal",t:"Reflux Symptoms",
+v:"An adult reports occasional heartburn after large meals, without swallowing difficulty, bleeding, weight loss, or chest pain.",
+q:"Which initial approach is reasonable?",
+a:"Lifestyle advice and a suitable short-term reflux treatment after screening.",
+w:["Immediate long-term antibiotic therapy.","Ignore all symptoms regardless of progression.","Recommend a medicine without checking contraindications."],
+e:"Uncomplicated occasional reflux may improve with meal and lifestyle changes and suitable nonprescription treatment.",
+p:"Screen for alarm symptoms, interactions, pregnancy, and persistence; refer if alarm features occur."
+},
+{
+s:"Gastrointestinal",t:"NSAID-Related Ulcer Risk",
+v:"A patient with a previous peptic ulcer asks to take ibuprofen regularly for back pain.",
+q:"What should the pharmacist do?",
+a:"Review the ulcer history and recommend a safer plan with clinical advice.",
+w:["Encourage high-dose ibuprofen without review.","Combine multiple NSAIDs.","Assume previous ulcers do not affect risk."],
+e:"NSAIDs can cause gastrointestinal ulceration and bleeding; previous ulcer disease increases concern.",
+p:"Assess risk factors and concomitant medicines, and discuss suitable alternatives with the prescriber."
+},
+{
+s:"Endocrine",t:"Hypoglycemia",
+v:"A conscious patient with diabetes is sweating, trembling, and confused. A glucose reading is low and the patient can swallow safely.",
+q:"What is the appropriate immediate response?",
+a:"Give fast-acting carbohydrate according to the patient's hypoglycemia plan and recheck glucose.",
+w:["Give additional insulin.","Give nothing and leave the patient alone.","Encourage exercise immediately."],
+e:"A conscious person who can swallow safely generally needs rapid carbohydrate and follow-up glucose monitoring.",
+p:"Follow local hypoglycemia protocol. If unconscious, having a seizure, or unable to swallow, give nothing by mouth and activate emergency care."
+},
+{
+s:"Endocrine",t:"Possible Diabetic Ketoacidosis",
+v:"A patient with diabetes has vomiting, abdominal pain, deep rapid breathing, and marked thirst.",
+q:"What is the safest recommendation?",
+a:"Seek emergency medical care immediately.",
+w:["Skip medical review and drink a sugary beverage only.","Exercise vigorously to lower glucose.","Wait until the next routine appointment."],
+e:"Vomiting, abdominal pain, dehydration, and deep rapid breathing may indicate diabetic ketoacidosis.",
+p:"Emergency referral is required; do not attempt to manage suspected ketoacidosis in the pharmacy."
+},
+{
+s:"Endocrine",t:"Metformin and Contrast Procedures",
+v:"A patient taking metformin is scheduled for imaging with iodinated contrast.",
+q:"What is the most appropriate advice?",
+a:"Confirm the procedure-specific plan with the clinical team and follow current guidance.",
+w:["Always double metformin on the day of imaging.","Assume contrast never affects medicine management.","Stop every chronic medicine indefinitely."],
+e:"Metformin management around contrast depends on kidney function, the procedure, and current clinical guidance.",
+p:"Check renal function and the local contrast protocol; do not give a blanket stop/restart instruction."
+},
+{
+s:"Endocrine",t:"Possible Hypothyroidism",
+v:"A patient reports persistent fatigue, cold intolerance, constipation, and gradual weight gain.",
+q:"What is the best next step?",
+a:"Recommend clinical assessment and thyroid function testing.",
+w:["Start thyroid hormone without testing.","Recommend antibiotics.","Assume symptoms confirm one diagnosis."],
+e:"These symptoms can occur with hypothyroidism but are nonspecific and need assessment.",
+p:"Refer for clinical evaluation and appropriate testing before treatment."
+},
+{
+s:"Endocrine",t:"Levothyroxine Administration",
+v:"A patient taking levothyroxine also takes an iron supplement with breakfast at the same time.",
+q:"What counselling is most appropriate?",
+a:"Separate iron and levothyroxine according to product guidance, commonly by at least four hours.",
+w:["Take both together to improve absorption.","Stop levothyroxine whenever iron is used.","Double levothyroxine every morning."],
+e:"Iron can reduce levothyroxine absorption when taken together.",
+p:"Review timing, consistency, and thyroid monitoring with the patient."
+},
+{
+s:"Renal",t:"Possible Acute Kidney Injury",
+v:"An older adult has vomiting, poor fluid intake, reduced urine output, and recent use of an NSAID.",
+q:"What is the best action?",
+a:"Arrange urgent clinical assessment for possible acute kidney injury.",
+w:["Recommend more NSAIDs.","Ignore the reduced urine output.","Add a diuretic without assessment."],
+e:"Dehydration, reduced urine output, and NSAID exposure can contribute to kidney injury.",
+p:"Refer urgently and provide a full medication history."
+},
+{
+s:"Renal",t:"Chronic Kidney Disease and Dosing",
+v:"A patient with known chronic kidney disease receives a new medicine that is cleared mainly by the kidneys.",
+q:"What should be checked before dispensing when relevant?",
+a:"Renal function and whether the dose or interval requires adjustment.",
+w:["Only the colour of the package.","Assume all medicines have the same renal dosing.","Increase the dose automatically."],
+e:"Some medicines accumulate when kidney function is reduced, increasing adverse-effect risk.",
+p:"Check the product information, current renal function, and prescriber instructions."
+},
+{
+s:"Infectious Diseases",t:"Antibiotic Allergy",
+v:"A patient reports a history of facial swelling and difficulty breathing shortly after taking penicillin.",
+q:"How should this history be treated?",
+a:"As a potentially serious immediate allergy requiring careful clinical review.",
+w:["As an irrelevant side effect.","As proof that every medicine is unsafe.","As a reason to take penicillin again at home."],
+e:"Facial swelling and breathing difficulty may represent anaphylaxis or another serious allergic reaction.",
+p:"Document the reaction accurately and ensure the prescriber selects an appropriate treatment."
+},
+{
+s:"Infectious Diseases",t:"Antibiotic Stewardship",
+v:"A patient has a runny nose and mild sore throat for two days without red flags and requests antibiotics.",
+q:"What is the best response?",
+a:"Explain that many short-duration upper respiratory infections are viral and antibiotics may not help.",
+w:["Supply antibiotics without assessment.","Recommend using leftover antibiotics.","Advise stopping any prescribed antibiotic halfway through."],
+e:"Antibiotics do not treat viral infections and unnecessary use contributes to antimicrobial resistance.",
+p:"Offer symptom relief when appropriate and explain red flags and when to seek assessment."
+},
+{
+s:"Infectious Diseases",t:"Suspected Meningitis",
+v:"A patient has fever, severe headache, neck stiffness, and a new non-blanching rash.",
+q:"What is the appropriate action?",
+a:"Activate emergency medical services immediately.",
+w:["Recommend a routine cold remedy.","Wait to see if the rash disappears.","Arrange a routine appointment next week."],
+e:"This combination can indicate a life-threatening infection and requires emergency assessment.",
+p:"Do not delay referral for pharmacy treatment."
+},
+{
+s:"Infectious Diseases",t:"Urinary Symptoms with Fever",
+v:"A patient has painful urination, fever, flank pain, and vomiting.",
+q:"What should the pharmacist recommend?",
+a:"Urgent same-day medical assessment for possible upper urinary tract infection.",
+w:["Treat only with cranberry products.","Ignore the fever and flank pain.","Use leftover antibiotics without evaluation."],
+e:"Fever and flank pain may indicate pyelonephritis or another serious condition.",
+p:"Refer promptly; emergency assessment may be necessary if the patient is very unwell."
+},
+{
+s:"Dermatology",t:"Possible Cellulitis",
+v:"A patient has a rapidly expanding area of red, warm, painful skin and fever.",
+q:"What is the best action?",
+a:"Arrange urgent medical assessment.",
+w:["Apply cosmetic moisturiser only.","Massage the area vigorously.","Delay assessment for two weeks."],
+e:"Expanding redness with fever may indicate a spreading skin infection.",
+p:"Refer urgently and advise emergency care for rapid progression or systemic illness."
+},
+{
+s:"Dermatology",t:"Possible Shingles",
+v:"A patient develops burning pain followed by grouped blisters in a band on one side of the torso.",
+q:"What is the best next step?",
+a:"Arrange prompt clinical assessment for possible shingles.",
+w:["Recommend sharing towels and clothing.","Assume the rash is always harmless.","Delay assessment for several weeks."],
+e:"A painful unilateral blistering rash may be shingles; timely assessment can matter for treatment.",
+p:"Refer promptly, particularly for facial or eye involvement, pregnancy, or immunosuppression."
+},
+{
+s:"Dermatology",t:"Anaphylaxis",
+v:"Minutes after a medicine, a patient develops tongue swelling, wheezing, and faintness.",
+q:"What is the immediate priority?",
+a:"Activate emergency services and follow the emergency anaphylaxis protocol.",
+w:["Give an oral antihistamine and wait.","Ask the patient to drive home.","Schedule a routine appointment."],
+e:"Airway swelling and breathing or circulation problems may indicate anaphylaxis.",
+p:"Use an adrenaline auto-injector if available and indicated under local emergency protocol; do not delay emergency help."
+},
+{
+s:"Dermatology",t:"Topical Corticosteroid Safety",
+v:"A patient plans to use a potent topical corticosteroid on the face for several weeks without medical advice.",
+q:"What is the best advice?",
+a:"Avoid unsupervised prolonged use on the face and seek suitable clinical guidance.",
+w:["Use the strongest product indefinitely.","Apply it to every rash without diagnosis.","Share the prescription with family members."],
+e:"Potent topical corticosteroids can cause skin adverse effects, especially on sensitive areas.",
+p:"Check the product potency, site, duration, age, and diagnosis; refer when appropriate."
+},
+{
+s:"Neurology",t:"Stroke Warning Signs",
+v:"A patient suddenly develops facial droop, arm weakness, and slurred speech.",
+q:"What should happen immediately?",
+a:"Call emergency services and record the time symptoms began.",
+w:["Give food and drink to test swallowing.","Wait one hour to see if it resolves.","Arrange a routine pharmacy review."],
+e:"Sudden facial weakness, arm weakness, and speech disturbance may indicate stroke.",
+p:"Emergency referral is time-critical; do not give anything by mouth if swallowing safety is uncertain."
+},
+{
+s:"Neurology",t:"Migraine with Red Flags",
+v:"A patient describes a sudden, extremely severe headache that reached maximum intensity within seconds.",
+q:"What is the safest recommendation?",
+a:"Immediate emergency assessment.",
+w:["Treat it as an ordinary migraine without screening.","Recommend strenuous exercise.","Delay care until the next month."],
+e:"A thunderclap headache can indicate a serious intracranial condition.",
+p:"Arrange emergency assessment rather than routine self-care."
+},
+{
+s:"Neurology",t:"Paracetamol Overdose",
+v:"A patient may have taken substantially more paracetamol than recommended but currently feels well.",
+q:"What is the best action?",
+a:"Contact emergency services or a poison information service immediately.",
+w:["Wait for symptoms before seeking help.","Recommend another paracetamol dose.","Induce vomiting at home."],
+e:"Paracetamol toxicity may cause serious liver injury even before symptoms appear.",
+p:"Urgent poison-centre or emergency assessment is required; establish the amount and timing if this does not delay help."
+},
+{
+s:"Mental Health",t:"Possible Serotonin Syndrome",
+v:"After a medicine change, a patient taking serotonergic medicines develops agitation, sweating, fever, tremor, and muscle jerking.",
+q:"What is the appropriate response?",
+a:"Urgent emergency evaluation for possible serotonin syndrome.",
+w:["Recommend increasing the serotonergic dose.","Reassure the patient that fever is expected.","Add another serotonergic medicine."],
+e:"Agitation, autonomic symptoms, and neuromuscular changes after serotonergic exposure may signal serotonin toxicity.",
+p:"Arrange urgent care and communicate all medicines and recent changes."
+},
+{
+s:"Mental Health",t:"Antidepressant Adherence",
+v:"A patient taking an antidepressant for one week reports no improvement and wants to stop treatment.",
+q:"What is the best counselling approach?",
+a:"Explain that benefit may take several weeks and discuss concerns with the prescriber before changing treatment.",
+w:["Double the dose without advice.","Stop abruptly in every situation.","Add a second antidepressant independently."],
+e:"Many antidepressants take several weeks to produce their full effect; adverse effects and safety still need review.",
+p:"Assess adverse effects and suicide risk where appropriate; urgent help is needed for immediate danger."
+},
+{
+s:"Mental Health",t:"Immediate Self-Harm Risk",
+v:"A patient says they intend to harm themselves today and have access to the means.",
+q:"What should the pharmacist do?",
+a:"Treat this as an immediate safety emergency and obtain urgent crisis or emergency help.",
+w:["Promise to keep the risk secret and end the conversation.","Leave the person alone without support.","Offer only a routine appointment next month."],
+e:"An expressed immediate intention with access to means requires urgent safety intervention.",
+p:"Stay with the person if safe, involve emergency/crisis services, and follow local safeguarding procedures."
+},
+{
+s:"Women's Health",t:"Possible Ectopic Pregnancy",
+v:"A patient who may be pregnant has one-sided lower abdominal pain, vaginal bleeding, and dizziness.",
+q:"What is the safest recommendation?",
+a:"Emergency assessment for possible ectopic pregnancy.",
+w:["Recommend waiting a week.","Treat only with an over-the-counter painkiller.","Assume it is a normal period."],
+e:"Pain, bleeding, and dizziness in possible pregnancy can indicate a life-threatening ectopic pregnancy.",
+p:"Arrange immediate emergency care."
+},
+{
+s:"Women's Health",t:"Emergency Contraception",
+v:"A patient requests emergency contraception after unprotected intercourse.",
+q:"What is the best pharmacy approach?",
+a:"Assess timing, medicines, pregnancy possibility, and available options promptly.",
+w:["Refuse to discuss any option.","Assume every method works equally well at every time.","Delay the conversation for several weeks."],
+e:"Choice and effectiveness depend on elapsed time, individual factors, medicine interactions, and local availability.",
+p:"Provide timely, nonjudgmental counselling and follow local guidance; explain when pregnancy testing is needed."
+},
+{
+s:"Women's Health",t:"Pregnancy and Medication Review",
+v:"A patient discovers they are pregnant and takes several prescribed and nonprescription medicines.",
+q:"What is the most appropriate advice?",
+a:"Arrange a prompt, individualised medication review and do not abruptly stop essential medicines without advice.",
+w:["Stop every medicine immediately regardless of risk.","Assume all medicines are safe in pregnancy.","Take additional supplements without checking."],
+e:"Medication risk depends on the drug, dose, timing, and untreated condition; abrupt discontinuation may also be harmful.",
+p:"Identify all products and contact the prescriber or pregnancy medicines information service."
+},
+{
+s:"Pediatrics",t:"Fever in a Young Infant",
+v:"A two-month-old infant has a measured temperature of 38°C.",
+q:"What is the safest action?",
+a:"Arrange immediate urgent medical assessment.",
+w:["Give adult cold medicine.","Wait several days before seeking help.","Use aspirin to lower the temperature."],
+e:"Fever in an infant younger than three months can signal serious infection and requires urgent assessment.",
+p:"Do not delay referral; use age-appropriate local fever guidance."
+},
+{
+s:"Pediatrics",t:"Child with Dehydration",
+v:"A child with vomiting has a dry mouth, very little urine, and unusual sleepiness.",
+q:"What is the best recommendation?",
+a:"Urgent medical assessment for possible significant dehydration.",
+w:["Avoid all fluids for 24 hours.","Give an adult antidiarrheal dose.","Ignore the sleepiness."],
+e:"Reduced urine, dry mouth, and altered alertness can indicate dehydration or serious illness.",
+p:"Arrange urgent assessment; emergency care is needed if the child is difficult to wake or severely unwell."
+},
+{
+s:"Pediatrics",t:"Aspirin in Children",
+v:"A caregiver asks whether to give aspirin to a child with a viral illness.",
+q:"What is the most appropriate response?",
+a:"Do not recommend aspirin for a child with a viral illness unless specifically directed by a specialist.",
+w:["Recommend adult aspirin dosing.","Combine aspirin with any other painkiller without checking.","Assume aspirin is the first choice for every child."],
+e:"Aspirin is generally avoided in children and adolescents with viral illnesses because of the association with Reye syndrome.",
+p:"Recommend an age- and weight-appropriate alternative after screening, and refer if red flags are present."
+},
+{
+s:"Pediatrics",t:"Weight-Based Dosing",
+v:"A caregiver asks for a liquid medicine dose for a child but cannot confirm the child's weight or the product concentration.",
+q:"What should the pharmacist do?",
+a:"Verify the child's weight, exact product concentration, and dosing guidance before advising.",
+w:["Guess a dose from the child's appearance.","Use an adult dose divided by two.","Use a household spoon for measurement."],
+e:"Paediatric dosing errors can occur when weight or liquid concentration is unknown.",
+p:"Confirm the product and use an appropriate oral syringe or measuring device."
+},
+{
+s:"Ophthalmology",t:"Chemical Eye Exposure",
+v:"A cleaning chemical splashes into a patient's eye.",
+q:"What should happen first?",
+a:"Immediately irrigate the eye with copious clean water or saline and seek urgent guidance.",
+w:["Rub the eye vigorously.","Wait until the end of the day.","Apply an unprescribed eye ointment before rinsing."],
+e:"Prompt irrigation can reduce chemical injury. Urgent assessment is important, especially for corrosive substances.",
+p:"Begin irrigation immediately and contact emergency or poison services; do not delay rinsing to identify the chemical."
+},
+{
+s:"Ophthalmology",t:"Acute Angle-Closure Glaucoma",
+v:"A patient has a painful red eye, blurred vision, halos around lights, and nausea.",
+q:"What is the most appropriate action?",
+a:"Immediate emergency ophthalmic assessment.",
+w:["Recommend routine lubricating drops only.","Wait several days.","Use someone else's steroid eye drops."],
+e:"Painful red eye with visual disturbance and nausea may indicate acute angle-closure glaucoma.",
+p:"Arrange emergency referral because vision may be at risk."
+},
+{
+s:"Ophthalmology",t:"Contact Lens-Related Red Eye",
+v:"A contact lens wearer develops a painful red eye with light sensitivity and blurred vision.",
+q:"What is the best recommendation?",
+a:"Urgent same-day eye assessment.",
+w:["Continue wearing contact lenses.","Use leftover antibiotic or steroid drops without assessment.","Ignore symptoms if there is no fever."],
+e:"Contact lens use with pain, photophobia, or visual changes raises concern for corneal infection.",
+p:"Stop wearing lenses and arrange urgent eye care."
+},
+{
+s:"Ear, Nose and Throat",t:"Sudden Hearing Loss",
+v:"A patient reports sudden hearing loss in one ear beginning this morning.",
+q:"What is the best action?",
+a:"Arrange urgent same-day medical or ENT assessment.",
+w:["Wait several weeks.","Insert objects into the ear canal.","Use earwax drops without assessing the cause."],
+e:"Sudden sensorineural hearing loss is time-sensitive and requires prompt evaluation.",
+p:"Urgently refer, particularly when the loss is sudden or associated with neurological symptoms."
+},
+{
+s:"Ear, Nose and Throat",t:"Possible Otitis Externa",
+v:"A swimmer has ear canal pain and tenderness when the outer ear is pulled.",
+q:"Which condition is suggested by these findings?",
+a:"Otitis externa.",
+w:["Acute coronary syndrome.","Diabetic ketoacidosis.","Acute appendicitis."],
+e:"Pain with manipulation of the outer ear is characteristic of otitis externa, though examination is needed.",
+p:"Assess severity and risk factors; refer for severe pain, fever, spreading redness, diabetes, or immunosuppression."
+},
+{
+s:"Musculoskeletal",t:"Possible Septic Arthritis",
+v:"A patient has a suddenly swollen, hot, very painful joint and fever.",
+q:"What is the safest recommendation?",
+a:"Urgent emergency assessment for possible septic arthritis.",
+w:["Exercise the joint intensely.","Treat only with topical moisturiser.","Delay review for two weeks."],
+e:"A hot swollen joint with fever may be a joint infection that requires urgent treatment.",
+p:"Refer urgently; do not delay assessment for self-care measures."
+},
+{
+s:"Musculoskeletal",t:"NSAID and Kidney Risk",
+v:"An older patient with kidney disease and dehydration asks to use ibuprofen for pain.",
+q:"What should the pharmacist do?",
+a:"Avoid recommending unsupervised NSAID use and arrange an appropriate pain-management review.",
+w:["Recommend maximum-dose ibuprofen immediately.","Combine ibuprofen with another NSAID.","Ignore the kidney history."],
+e:"NSAIDs can worsen kidney function, particularly with chronic kidney disease or dehydration.",
+p:"Review comorbidities and medicines and discuss safer options with the prescriber."
+},
+{
+s:"Musculoskeletal",t:"Possible Cauda Equina Syndrome",
+v:"A patient with back pain develops new urinary retention, saddle numbness, and leg weakness.",
+q:"What is the appropriate action?",
+a:"Emergency assessment immediately.",
+w:["Recommend stretching and review in one month.","Treat with a laxative only.","Ignore the urinary symptoms."],
+e:"Back pain with bladder dysfunction, saddle sensory change, or progressive weakness may indicate cauda equina syndrome.",
+p:"Emergency referral is required to prevent permanent neurological injury."
+},
+{
+s:"Medication Safety",t:"Duplicate Paracetamol Products",
+v:"A patient takes a cold-and-flu combination product and plans to take separate paracetamol tablets as well.",
+q:"What should the pharmacist check?",
+a:"The total paracetamol from all products and the recommended dosing limits.",
+w:["Only the colour of each tablet.","Whether taking both doubles the benefit without risk.","Nothing, because combination products never contain paracetamol."],
+e:"Multiple products containing paracetamol can cause accidental overdose.",
+p:"Review all active ingredients and dosing intervals; seek urgent advice if an overdose may have occurred."
+},
+{
+s:"Medication Safety",t:"Opioid and Sedative Combination",
+v:"A patient taking an opioid asks to add a sedating medicine and reports unusual drowsiness.",
+q:"What is the key concern?",
+a:"Potential additive central nervous system and respiratory depression.",
+w:["Guaranteed improved alertness.","No interaction is possible.","A need to increase both doses."],
+e:"Opioids combined with other sedatives can increase the risk of profound sedation and respiratory depression.",
+p:"Assess alertness and breathing; emergency help is needed for slow breathing or difficulty waking. Review the combination with the prescriber."
+},
+{
+s:"Medication Safety",t:"Missed Anticoagulant Dose",
+v:"A patient taking an anticoagulant realises they missed a dose but cannot remember the medicine-specific instructions.",
+q:"What is the safest advice?",
+a:"Check the exact product's missed-dose instructions or contact the pharmacist/prescriber; do not double a dose unless directed.",
+w:["Always take two doses together.","Stop anticoagulation permanently.","Take an extra dose every time a dose is missed."],
+e:"Missed-dose advice differs among anticoagulants and dosing schedules.",
+p:"Identify the medicine and timing, consult authoritative product guidance, and assess any bleeding or clotting symptoms."
+},
+{
+s:"Medication Safety",t:"Possible Anaphylaxis from Medicine",
+v:"A patient develops hives, wheezing, and dizziness soon after a new medicine.",
+q:"What should the pharmacist suspect?",
+a:"A potentially life-threatening allergic reaction requiring emergency response.",
+w:["A mild effect that never needs assessment.","A reason to take another dose immediately.","A condition that can be diagnosed from the package colour."],
+e:"Skin symptoms combined with breathing or circulation symptoms can indicate anaphylaxis.",
+p:"Activate emergency services and follow the local anaphylaxis protocol."
+},
+{
+s:"Geriatrics",t:"Falls and Sedating Medicines",
+v:"An older adult has repeated falls and takes several sedating medicines.",
+q:"What is a useful next step?",
+a:"Arrange a structured medication review and assess other causes of falls.",
+w:["Stop every medicine abruptly.","Add another sedative.","Assume falls are an inevitable part of ageing."],
+e:"Sedation, orthostatic hypotension, interactions, and multiple medicines can contribute to falls.",
+p:"Review the full medicine list and refer to the prescriber for an individualised plan."
+},
+{
+s:"Geriatrics",t:"Anticholinergic Burden",
+v:"An older patient taking several medicines reports dry mouth, constipation, blurred vision, and confusion.",
+q:"What medicine-related issue should be considered?",
+a:"Possible cumulative anticholinergic effects.",
+w:["A definite need for more anticholinergic medicine.","A diagnosis confirmed without examination.","A reason to stop all medicines immediately."],
+e:"Multiple anticholinergic medicines can contribute to dry mouth, constipation, blurred vision, and cognitive effects.",
+p:"Review the full medication list and discuss safer alternatives with the prescriber."
+},
+{
+s:"Hematology",t:"Possible Iron Deficiency",
+v:"A patient reports fatigue and pallor and has a blood count showing microcytic anemia.",
+q:"What is the appropriate next step?",
+a:"Clinical evaluation to confirm the cause and investigate possible blood loss.",
+w:["Assume all anemia is caused by poor diet.","Start indefinite iron without testing.","Ignore the abnormal blood count."],
+e:"Microcytic anemia can be caused by iron deficiency but other causes exist; the underlying reason matters.",
+p:"Refer for appropriate laboratory evaluation and investigate concerning symptoms."
+},
+{
+s:"Hematology",t:"Possible Deep Vein Thrombosis",
+v:"A patient has new one-sided calf swelling, warmth, and pain after prolonged immobility.",
+q:"What is the safest recommendation?",
+a:"Urgent same-day medical assessment for possible deep vein thrombosis.",
+w:["Massage the calf vigorously.","Treat only with a topical cream.","Ignore the swelling if the patient can walk."],
+e:"Unilateral leg swelling and pain can indicate DVT, which may lead to pulmonary embolism.",
+p:"Arrange urgent assessment; chest pain or breathlessness requires emergency services."
+},
+{
+s:"Immunology",t:"Severe Allergic Reaction",
+v:"After a food exposure, a patient develops widespread hives, lip swelling, and difficulty breathing.",
+q:"What is the immediate priority?",
+a:"Activate emergency services and follow the anaphylaxis emergency protocol.",
+w:["Give only water and wait.","Ask the patient to walk around.","Arrange a routine appointment."],
+e:"Airway or breathing difficulty with swelling after an exposure may indicate anaphylaxis.",
+p:"Use prescribed emergency adrenaline when indicated and available, and do not delay emergency assistance."
+},
+{
+s:"Urology",t:"Acute Urinary Retention",
+v:"A patient has severe lower abdominal discomfort and cannot pass urine despite a strong urge.",
+q:"What is the most appropriate action?",
+a:"Immediate urgent medical assessment.",
+w:["Drink excessive amounts of water and wait overnight.","Take an antihistamine without advice.","Ignore the inability to urinate."],
+e:"Acute urinary retention can be painful and may require urgent bladder drainage and investigation.",
+p:"Refer immediately rather than attempting pharmacy treatment."
+},
+{
+s:"Preventive Care",t:"Smoking Cessation",
+v:"A patient who smokes wants help choosing a method to quit.",
+q:"What is a helpful evidence-based approach?",
+a:"Offer behavioural support and discuss suitable cessation medicines based on history and preferences.",
+w:["Tell the patient that quitting is impossible.","Recommend switching to a different combustible tobacco product.","Provide medication without screening."],
+e:"Combining behavioural support with an appropriate cessation treatment can improve quit success.",
+p:"Assess smoking pattern, previous attempts, contraindications, and patient preference; follow local guidance."
+},
+{
+s:"Preventive Care",t:"Vaccination Screening",
+v:"A patient asks whether a vaccine is suitable but has a history of a severe allergic reaction to a previous dose.",
+q:"What is the best response?",
+a:"Review the exact reaction and vaccine and obtain appropriate clinical guidance before administration.",
+w:["Ignore the history.","Assume every vaccine is contraindicated forever.","Administer the vaccine without screening."],
+e:"A severe allergic reaction to a previous dose or component requires careful product-specific evaluation.",
+p:"Check the vaccine guidance and refer to the appropriate immunisation clinician when indicated."
+},
+{
+s:"Toxicology",t:"Possible Carbon Monoxide Exposure",
+v:"Several people in one building develop headache, dizziness, and nausea while a fuel-burning heater is operating.",
+q:"What should they do?",
+a:"Leave the building for fresh air and contact emergency services.",
+w:["Remain indoors to identify the source.","Use a fan and continue normal activities.","Take painkillers and return to the room."],
+e:"Multiple people with similar symptoms around a fuel-burning appliance may have carbon monoxide exposure.",
+p:"Prioritise evacuation and emergency assessment; do not re-enter until authorities say it is safe."
+},
+{
+s:"Toxicology",t:"Suspected Poisoning",
+v:"A caregiver reports that a child may have swallowed an unknown household chemical.",
+q:"What is the safest action?",
+a:"Contact emergency services or a poison information centre immediately and follow their instructions.",
+w:["Induce vomiting.","Give a home remedy to neutralise the chemical.","Wait for symptoms before asking for help."],
+e:"Management depends on the substance and exposure; inducing vomiting or attempting neutralisation can cause harm.",
+p:"Keep the container available for identification if safe, and do not delay urgent help."
+},
+{
+s:"Rheumatology",t:"Possible Gout",
+v:"A patient develops sudden severe pain, redness, and swelling in the big toe joint.",
+q:"What is the best approach?",
+a:"Assess for red flags and arrange clinical review to confirm the cause and choose suitable treatment.",
+w:["Assume the diagnosis is certain without assessment.","Start antibiotics left over from another illness.","Ignore fever if present."],
+e:"Gout can cause acute joint inflammation, but infection and other conditions can mimic it.",
+p:"Urgently refer if fever, systemic illness, or concern for septic arthritis is present."
+},
+{
+s:"Rheumatology",t:"Methotrexate Dosing Safety",
+v:"A patient prescribed once-weekly methotrexate says they have accidentally taken it daily.",
+q:"What should the pharmacist recommend?",
+a:"Urgent medical and poison-service assessment immediately.",
+w:["Continue the daily schedule.","Skip assessment if the patient feels well.","Take a double dose next week."],
+e:"Accidental daily dosing of weekly methotrexate can cause severe or fatal toxicity.",
+p:"Treat as an urgent medication error; communicate the dose and timing and do not delay referral."
+},
+{
+s:"Infectious Diseases",t:"C. difficile Warning Signs",
+v:"A patient recently treated with antibiotics develops frequent watery diarrhea and abdominal pain.",
+q:"What is the appropriate next step?",
+a:"Arrange prompt medical assessment for possible antibiotic-associated infection.",
+w:["Recommend leftover antibiotics.","Tell the patient to take antidiarrheals regardless of severity.","Ignore symptoms because antibiotics always prevent infection."],
+e:"Recent antibiotics with significant diarrhea may indicate C. difficile or another cause requiring assessment.",
+p:"Refer promptly, especially for fever, blood, severe pain, dehydration, or systemic illness."
+},
+{
+s:"Respiratory",t:"COPD Exacerbation",
+v:"A patient with COPD reports substantially worse breathlessness and more sputum than usual.",
+q:"What should the pharmacist do?",
+a:"Assess severity and arrange prompt clinical review; emergency care is needed for severe breathlessness or cyanosis.",
+w:["Recommend stopping all inhalers.","Ignore the change from baseline.","Advise strenuous exercise during severe symptoms."],
+e:"Worsening breathlessness and sputum may signal a COPD exacerbation or another serious illness.",
+p:"Check oxygenation if appropriately equipped, red flags, and current action plan; refer according to severity."
+},
+{
+s:"Gastrointestinal",t:"Constipation with Red Flags",
+v:"A patient has severe abdominal pain, vomiting, and inability to pass stool or gas.",
+q:"What is the safest recommendation?",
+a:"Urgent emergency assessment for possible bowel obstruction.",
+w:["Use a strong laxative immediately without assessment.","Increase fibre and wait a week.","Ignore vomiting."],
+e:"Severe pain, vomiting, and inability to pass stool or gas can indicate bowel obstruction.",
+p:"Do not recommend routine laxatives; arrange emergency assessment."
+},
+{
+s:"Cardiovascular",t:"Possible Hypertensive Emergency",
+v:"A patient has a very high blood pressure reading with chest pain and new neurological symptoms.",
+q:"What is the best action?",
+a:"Activate emergency medical services immediately.",
+w:["Repeat the reading next month.","Recommend exercise to lower pressure quickly.","Advise taking someone else's blood pressure medicine."],
+e:"Severe blood pressure elevation with possible organ-damage symptoms is an emergency.",
+p:"Arrange emergency assessment; do not attempt rapid unsupervised blood pressure reduction."
+},
+{
+s:"Medication Safety",t:"Digoxin Toxicity Concern",
+v:"An older patient taking digoxin reports nausea, loss of appetite, and new visual disturbances.",
+q:"What should be considered?",
+a:"Possible digoxin toxicity requiring prompt clinical assessment.",
+w:["A reason to double the next dose.","A guaranteed harmless effect.","A reason to add an interacting medicine without review."],
+e:"Gastrointestinal symptoms and visual changes can occur with digoxin toxicity, though they are nonspecific.",
+p:"Promptly refer and provide the medication list, kidney history, and symptom timeline."
+},
+{
+s:"Endocrine",t:"Steroid-Induced Hyperglycemia",
+v:"A patient with diabetes starts systemic corticosteroids and notices substantially higher glucose readings.",
+q:"What is the best action?",
+a:"Contact the treating clinician for a monitoring and treatment plan.",
+w:["Stop corticosteroids abruptly regardless of indication.","Ignore all high readings.","Take extra diabetes medicine without a plan."],
+e:"Systemic corticosteroids can increase blood glucose and may require closer monitoring or treatment adjustment.",
+p:"Review the indication and steroid schedule; urgent care is needed for severe symptoms or suspected ketoacidosis."
+},
+{
+s:"Gastrointestinal",t:"Dysphagia and Weight Loss",
+v:"A 60-year-old patient reports progressive difficulty swallowing and unintentional weight loss.",
+q:"What is the most appropriate recommendation?",
+a:"Prompt medical assessment for alarm symptoms.",
+w:["Treat with antacids indefinitely without review.","Recommend a high-dose NSAID.","Ignore the weight loss."],
+e:"Progressive dysphagia and unexplained weight loss require prompt investigation.",
+p:"Refer for medical evaluation rather than relying on self-care."
+},
+{
+s:"Neurology",t:"First Seizure",
+v:"A person has a first witnessed seizure and is now recovering.",
+q:"What is the safest next step?",
+a:"Arrange emergency medical assessment, particularly for a first seizure.",
+w:["Put an object in the person's mouth during another seizure.","Restrain the person forcefully.","Give food or drink before full recovery."],
+e:"A first seizure needs medical assessment to identify causes and injury risk.",
+p:"Protect from injury, time the seizure, place on the side when possible after convulsions, and call emergency services according to local guidance."
+},
+{
+s:"Pediatrics",t:"Possible Severe Respiratory Distress",
+v:"A young child has chest indrawing, grunting, and bluish lips.",
+q:"What is the correct action?",
+a:"Activate emergency medical services immediately.",
+w:["Offer a cough sweet and wait.","Give food to improve energy.","Book a routine appointment."],
+e:"Cyanosis and signs of severe respiratory distress are life-threatening warning signs.",
+p:"Provide immediate emergency assistance and do not delay for routine pharmacy treatment."
+},
+{
+s:"Women's Health",t:"Possible Preeclampsia",
+v:"A pregnant patient after 20 weeks has severe headache, visual changes, and upper abdominal pain.",
+q:"What is the safest recommendation?",
+a:"Immediate obstetric assessment for possible preeclampsia.",
+w:["Wait for the next routine appointment.","Take someone else's blood pressure medicine.","Ignore symptoms if there is no fever."],
+e:"Severe headache, visual changes, and upper abdominal pain during pregnancy can be warning signs of preeclampsia.",
+p:"Arrange urgent maternity or emergency assessment."
+},
+{
+s:"Infectious Diseases",t:"Rabies Exposure Concern",
+v:"A patient has been bitten by an unfamiliar mammal in an area where rabies may occur.",
+q:"What is the most appropriate immediate advice?",
+a:"Wash the wound thoroughly and seek urgent medical/public health assessment for rabies prevention.",
+w:["Wait for symptoms to appear.","Seal the wound without cleaning it.","Assume vaccination is never needed."],
+e:"Rabies prevention is time-critical because symptoms after infection are usually catastrophic.",
+p:"Wash with soap and running water and arrange urgent local public health guidance."
+},
+{
+s:"Pharmacy Practice",t:"Medication Reconciliation",
+v:"A patient is discharged from hospital with a changed medicine list and is unsure which old medicines to continue.",
+q:"What is the best action?",
+a:"Reconcile the discharge list against the patient's actual medicines and clarify discrepancies with the clinical team.",
+w:["Tell the patient to take every old and new medicine together.","Discard all medicines without review.","Guess which medicines were discontinued."],
+e:"Transitions of care can create omissions, duplication, and dosing errors.",
+p:"Verify the latest discharge instructions and contact the prescriber or discharge team for unresolved discrepancies."
+}
+];
 
-let state = {
-  tab:"home",
-  score:0,
-  answered:0,
-  inventory:{},
-  caseIndex:0,
-  lastAnswers:{}
+const presentationStyles = [
+  "During a community pharmacy consultation,",
+  "At a follow-up medication review,",
+  "A patient asks the pharmacist for advice:",
+  "During a clinical case discussion,",
+  "At a primary care visit,",
+  "A caregiver reports the following situation:",
+  "While reviewing a patient's medication history,",
+  "In an outpatient clinical setting,"
+];
+
+const difficultyFor = (i) => {
+  if (i % 5 === 0) return "Advanced";
+  if (i % 3 === 0) return "Intermediate";
+  return "Beginner";
 };
 
-drugs.forEach(d => {
-  if (!state.inventory[d.id]) state.inventory[d.id] = 0;
-});
-
-function loadProgress() {
-  try {
-    const saved = localStorage.getItem(SAVE_KEY);
-    if (!saved) return;
-    const parsed = JSON.parse(saved);
-    state.score = Number(parsed.score) || 0;
-    state.answered = Number(parsed.answered) || 0;
-    state.inventory = Object.assign(state.inventory, parsed.inventory || {});
-    state.caseIndex = Number(parsed.caseIndex) || 0;
-    state.lastAnswers = parsed.lastAnswers || {};
-  } catch (e) {
-    console.warn("تعذر تحميل التقدم المحفوظ", e);
+function buildCases(){
+  const result=[];
+  let id=1;
+  for(let round=0;round<8;round++){
+    for(let j=0;j<templates.length;j++){
+      if(result.length>=300) break;
+      const x=templates[j];
+      const variant=presentationStyles[round];
+      result.push({
+        id,
+        system:x.s,
+        title:x.t + (round===0 ? "" : " — Practice Case "+(round+1)),
+        vignette:variant+" "+x.v,
+        question:x.q,
+        answer:x.a,
+        distractors:[...x.w],
+        explanation:x.e,
+        action:x.p,
+        difficulty:difficultyFor(id)
+      });
+      id++;
+    }
+    if(result.length>=300) break;
   }
+  return result;
 }
 
-function saveProgress() {
-  try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
-      score:state.score,
-      answered:state.answered,
-      inventory:state.inventory,
-      caseIndex:state.caseIndex,
-      lastAnswers:state.lastAnswers
-    }));
-    alert("تم حفظ تقدمك على هذا الجهاز.");
-  } catch (e) {
-    alert("تعذر الحفظ. تحقق من مساحة التخزين وإعدادات المتصفح.");
-  }
+const cases=buildCases();
+let filteredCases=[...cases];
+let currentIndex=0;
+let selectedAnswer=null;
+let submitted=false;
+const results={};
+
+const $=id=>document.getElementById(id);
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
 }
 
-function showTab(tab) {
-  state.tab = tab;
-  render();
-  window.scrollTo({top:0, behavior:"smooth"});
+function shuffleOptions(item){
+  const all=[item.answer,...item.distractors];
+  return all.map((value,index)=>({value,isCorrect:index===0}))
+    .sort((a,b)=>{
+      const keyA=(item.id*17+a.value.length*7)%101;
+      const keyB=(item.id*17+b.value.length*7)%101;
+      return keyA-keyB;
+    });
 }
 
-function homePage() {
-  return `
-    <section class="card hero">
-      <span class="badge">منصة تعليمية للصيدلة</span>
-      <h2>أهلاً بك في صيدليتي ⚕</h2>
-      <p>تعلّم الأدوية، وراجع الحالات السريرية، وتابع تقدمك بواجهة طبية بسيطة.</p>
-      <button class="btn" onclick="showTab('cases')">ابدأ التعلّم ←</button>
-    </section>
-
-    <section class="grid">
-      <button class="tile" onclick="showTab('cases')">
-        <span class="emoji">🩺</span>
-        <strong>الحالات السريرية</strong>
-        <small>تدريب على اتخاذ القرار</small>
-      </button>
-      <button class="tile" onclick="showTab('drugs')">
-        <span class="emoji">💊</span>
-        <strong>موسوعة الأدوية</strong>
-        <small>بحث ومعلومات ومراجع</small>
-      </button>
-      <button class="tile" onclick="showTab('inventory')">
-        <span class="emoji">📦</span>
-        <strong>المخزون التعليمي</strong>
-        <small>تجربة إدارة الكميات</small>
-      </button>
-      <button class="tile" onclick="showTab('progress')">
-        <span class="emoji">🏆</span>
-        <strong>تقدمي الدراسي</strong>
-        <small>النقاط والإجابات</small>
-      </button>
-    </section>
-
-    <section class="card">
-      <h2>📚 مصادر طبية موثوقة</h2>
-      <p class="muted">روابط خارجية للمراجعة. قد تكون بعض المصادر باللغة الإنجليزية.</p>
-      <a class="source" target="_blank" rel="noopener" href="https://medlineplus.gov/druginformation.html">MedlinePlus — معلومات الأدوية</a>
-      <a class="source" target="_blank" rel="noopener" href="https://dailymed.nlm.nih.gov/dailymed/">DailyMed — نشرات الأدوية</a>
-      <a class="source" target="_blank" rel="noopener" href="https://www.who.int/health-topics/patient-safety">WHO — سلامة المرضى</a>
-      <a class="source" target="_blank" rel="noopener" href="https://www.nhs.uk/medicines/">NHS — الأدوية والإرشادات</a>
-    </section>
-
-    <section class="notice">
-      ⚠️ المعلومات لأغراض التعليم فقط، ولا تغني عن النشرة الرسمية أو التقييم الطبي. لا تستخدم هذا التطبيق وحده لاتخاذ قرارات علاجية.
-    </section>`;
-}
-
-function drugsPage() {
-  return `
-    <section class="card">
-      <h2>💊 موسوعة الأدوية</h2>
-      <p class="muted">ابحث بالاسم العربي أو الإنجليزي أو التصنيف.</p>
-      <input id="drugSearch" placeholder="مثال: Paracetamol أو باراسيتامول"
-        oninput="filterDrugs(this.value)" aria-label="البحث عن دواء">
-      <div id="drugList">${drugCards(drugs)}</div>
-    </section>
-    <section class="notice">
-      المعلومات هنا مختصرة. راجع النشرة الرسمية لتفاصيل الجرعات وموانع الاستعمال والتداخلات.
-    </section>`;
-}
-
-function drugCards(list) {
-  if (!list.length) return "<p>لا توجد نتائج مطابقة.</p>";
-  return list.map(d => `
-    <article class="drug">
-      <div class="drug-name">${d.name}</div>
-      <small>${d.en} · ${d.class}</small>
-      <details>
-        <summary>عرض المعلومات والمصدر</summary>
-        <dl>
-          <dt>الاستعمال العام</dt><dd>${d.use}</dd>
-          <dt>التحذيرات</dt><dd>${d.cautions}</dd>
-          <dt>الآثار الجانبية المحتملة</dt><dd>${d.effects}</dd>
-        </dl>
-        <a class="source" target="_blank" rel="noopener" href="${d.source}">فتح المرجع الطبي الأصلي ↗</a>
-      </details>
-    </article>`).join("");
-}
-
-function filterDrugs(value) {
-  const q = value.trim().toLowerCase();
-  const found = drugs.filter(d =>
-    [d.name,d.en,d.class,d.use].some(v => v.toLowerCase().includes(q))
-  );
-  document.getElementById("drugList").innerHTML = drugCards(found);
-}
-
-function casesPage() {
-  const c = cases[state.caseIndex % cases.length];
-  const previous = state.lastAnswers[state.caseIndex];
-  return `
-    <section class="card">
-      <span class="badge">حالة ${(state.caseIndex % cases.length)+1} من ${cases.length}</span>
-      <h2>${c.title}</h2>
-      <p>${c.text}</p>
-      ${c.options.map((option,i) => {
-        let cls = "option";
-        if (previous !== undefined && i === c.answer) cls += " correct";
-        else if (previous === i) cls += " wrong";
-        return `<button class="${cls}" ${previous !== undefined ? "disabled" : ""}
-          onclick="answerCase(${i})">${option}</button>`;
-      }).join("")}
-      ${previous !== undefined ? `
-        <p><strong>${previous === c.answer ? "إجابة صحيحة ✓" : "راجع الإجابة الصحيحة"}</strong></p>
-        <p>${c.explanation}</p>
-        <button class="btn" onclick="nextCase()">الحالة التالية ←</button>
-      ` : ""}
-    </section>
-    <section class="notice">
-      الحالات تعليمية، والقرار الحقيقي يعتمد على تقييم المريض والمراجع المعتمدة.
-    </section>`;
-}
-
-function answerCase(choice) {
-  const index = state.caseIndex % cases.length;
-  if (state.lastAnswers[index] !== undefined) return;
-  state.lastAnswers[index] = choice;
-  state.answered++;
-  if (choice === cases[index].answer) state.score += 10;
-  saveSilently();
-  render();
-}
-
-function nextCase() {
-  state.caseIndex = (state.caseIndex + 1) % cases.length;
-  render();
-}
-
-function inventoryPage() {
-  return `
-    <section class="card">
-      <h2>📦 المخزون التعليمي</h2>
-      <p class="muted">محاكاة للتعلّم فقط. هذه الكميات ليست مخزون صيدلية حقيقياً.</p>
-      ${drugs.map(d => `
-        <div class="row">
-          <div>
-            <strong>${d.name}</strong><br>
-            <span class="muted">الكمية: ${Number(state.inventory[d.id]) || 0}</span>
-          </div>
-          <div style="display:flex;gap:5px">
-            <button class="btn light" aria-label="إنقاص الكمية"
-              onclick="changeStock('${d.id}',-1)">−</button>
-            <button class="btn" aria-label="زيادة الكمية"
-              onclick="changeStock('${d.id}',1)">+</button>
-          </div>
-        </div>
-      `).join("")}
-      <button class="btn light" onclick="saveProgress()">حفظ الكميات</button>
-    </section>`;
-}
-
-function changeStock(id, amount) {
-  state.inventory[id] = Math.max(0, (Number(state.inventory[id]) || 0) + amount);
-  saveSilently();
-  render();
-}
-
-function progressPage() {
-  const percent = state.answered
-    ? Math.round((state.score / (state.answered * 10)) * 100)
-    : 0;
-  return `
-    <section class="card">
-      <h2>🏆 تقدمك التعليمي</h2>
-      <div class="row"><span>النقاط المكتسبة</span><strong>${state.score}</strong></div>
-      <div class="row"><span>الحالات المجاب عنها</span><strong>${state.answered}</strong></div>
-      <div class="row"><span>نسبة الإجابات الصحيحة</span><strong>${percent}%</strong></div>
-      <div class="progress"><div style="width:${percent}%"></div></div>
-      <p class="muted">تُحسب النقاط على أساس 10 نقاط لكل إجابة صحيحة.</p>
-      <button class="btn" onclick="saveProgress()">حفظ التقدم</button>
-      <button class="btn danger" onclick="resetProgress()">إعادة التقدم</button>
-    </section>`;
-}
-
-function saveSilently() {
-  try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
-      score:state.score,
-      answered:state.answered,
-      inventory:state.inventory,
-      caseIndex:state.caseIndex,
-      lastAnswers:state.lastAnswers
-    }));
-  } catch (e) {
-    console.warn("تعذر حفظ التقدم", e);
-  }
-}
-
-function resetProgress() {
-  if (!confirm("هل تريد حذف النقاط والإجابات والكميات المحفوظة؟")) return;
-  localStorage.removeItem(SAVE_KEY);
-  state.score = 0;
-  state.answered = 0;
-  state.inventory = {};
-  state.caseIndex = 0;
-  state.lastAnswers = {};
-  drugs.forEach(d => state.inventory[d.id] = 0);
-  render();
-}
-
-function render() {
-  const pages = {
-    home:homePage,
-    cases:casesPage,
-    drugs:drugsPage,
-    inventory:inventoryPage,
-    progress:progressPage
-  };
-  document.getElementById("app").innerHTML = pages[state.tab]();
-  document.querySelectorAll("nav button").forEach(button => {
-    button.classList.toggle("active", button.dataset.tab === state.tab);
+function initFilters(){
+  const systems=[...new Set(cases.map(c=>c.system))].sort();
+  systems.forEach(system=>{
+    const option=document.createElement("option");
+    option.value=system;
+    option.textContent=system;
+    $("systemFilter").appendChild(option);
   });
 }
 
-loadProgress();
-render();
+function updateStats(){
+  const answered=Object.keys(results).length;
+  const correct=Object.values(results).filter(x=>x.correct).length;
+  $("totalCount").textContent=cases.length;
+  $("answeredCount").textContent=answered;
+  $("scoreCount").textContent=answered?Math.round(correct/answered*100)+"%":"0%";
+  $("progressBar").style.width=(answered/cases.length*100)+"%";
+}
 
-/* إخفاء شاشة البداية بعد 3 ثوانٍ */
-window.setTimeout(() => {
-  const splash = document.getElementById("splash");
-  splash.style.opacity = "0";
-  window.setTimeout(() => splash.remove(), 450);
-}, 3000);
-<script src="cases-data.js"></script>
-<script>
-<footer>
-  صيدليتي © 2026 · منصة تعليمية صيدلانية
-</footer>
+function applyFilters(){
+  const search=$("searchInput").value.trim().toLowerCase();
+  const system=$("systemFilter").value;
+  const difficulty=$("difficultyFilter").value;
+  const sort=$("sortFilter").value;
+
+  filteredCases=cases.filter(c=>{
+    const matchesSystem=system==="all"||c.system===system;
+    const matchesDifficulty=difficulty==="all"||c.difficulty===difficulty;
+    const searchable=(c.title+" "+c.system+" "+c.vignette+" "+c.question).toLowerCase();
+    return matchesSystem&&matchesDifficulty&&searchable.includes(search);
+  });
+
+  if(sort==="title") filteredCases.sort((a,b)=>a.title.localeCompare(b.title));
+  if(sort==="system") filteredCases.sort((a,b)=>a.system.localeCompare(b.system)||a.id-b.id);
+
+  $("resultCount").textContent=filteredCases.length+" cases found";
+  if(!filteredCases.length){
+    $("caseTitle").textContent="No matching cases";
+    $("caseSystem").textContent="";
+    $("caseVignette").textContent="Try another search term or select a different filter.";
+    $("questionText").textContent="";
+    $("options").innerHTML="";
+    $("feedback").classList.add("hidden");
+    $("caseNumber").textContent="No case";
+    $("previousBtn").disabled=true;
+    $("nextBtn").disabled=true;
+    $("checkBtn").disabled=true;
+    return;
+  }
+
+  currentIndex=Math.min(currentIndex,filteredCases.length-1);
+  renderCase();
+}
+
+function renderCase(){
+  if(!filteredCases.length)return;
+  const c=filteredCases[currentIndex];
+  selectedAnswer=null;
+  submitted=false;
+  $("caseNumber").textContent="Case "+c.id+" of "+cases.length;
+  $("difficultyPill").textContent=c.difficulty;
+  $("caseTitle").textContent=c.title;
+  $("caseSystem").textContent="System: "+c.system;
+  $("caseVignette").textContent=c.vignette;
+  $("questionText").textContent=c.question;
+  $("feedback").className="feedback hidden";
+  $("feedback").innerHTML="";
+  $("checkBtn").disabled=false;
+  $("previousBtn").disabled=currentIndex===0;
+  $("nextBtn").disabled=currentIndex===filteredCases.length-1;
+
+  const options=shuffleOptions(c);
+  $("options").innerHTML="";
+  options.forEach((option,index)=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="option";
+    button.dataset.correct=String(option.isCorrect);
+    button.innerHTML='<span class="letter">'+String.fromCharCode(65+index)+'.</span><span>'+escapeHTML(option.value)+'</span>';
+    button.addEventListener("click",()=>{
+      if(submitted)return;
+      selectedAnswer=option.value;
+      document.querySelectorAll(".option").forEach(el=>el.classList.remove("selected"));
+      button.classList.add("selected");
+    });
+    $("options").appendChild(button);
+  });
+
+  if(results[c.id]) showSavedResult(c,options);
+  updateStats();
+}
+
+function showSavedResult(c,options){
+  submitted=true;
+  selectedAnswer=results[c.id].selected;
+  document.querySelectorAll(".option").forEach(el=>{
+    if(el.textContent.slice(2).trim()===c.answer)el.classList.add("correct");
+    if(el.textContent.slice(2).trim()===results[c.id].selected && !results[c.id].correct)el.classList.add("incorrect");
+  });
+  showFeedback(c,results[c.id].correct);
+  $("checkBtn").disabled=true;
+}
+
+function showFeedback(c,correct){
+  const box=$("feedback");
+  box.className="feedback "+(correct?"good":"bad");
+  box.innerHTML=
+    "<h3>"+(correct?"Correct!":"Review this answer")+"</h3>"+
+    "<p><strong>Best answer:</strong> "+escapeHTML(c.answer)+"</p>"+
+    "<p><strong>Explanation:</strong> "+escapeHTML(c.explanation)+"</p>"+
+    "<p><strong>Pharmacist's action:</strong> "+escapeHTML(c.action)+"</p>";
+}
+
+function checkAnswer(){
+  if(!filteredCases.length)return;
+  const c=filteredCases[currentIndex];
+  if(results[c.id]){
+    showFeedback(c,results[c.id].correct);
+    return;
+  }
+  if(!selectedAnswer){
+    $("feedback").className="feedback bad";
+    $("feedback").innerHTML="<strong>Please select an answer first.</strong>";
+    return;
+  }
+  submitted=true;
+  const correct=selectedAnswer===c.answer;
+  results[c.id]={selected:selectedAnswer,correct};
+  document.querySelectorAll(".option").forEach(el=>{
+    const text=el.textContent.slice(2).trim();
+    if(text===c.answer)el.classList.add("correct");
+    if(text===selectedAnswer&&!correct)el.classList.add("incorrect");
+  });
+  showFeedback(c,correct);
+  $("checkBtn").disabled=true;
+  updateStats();
+}
+
+function move(delta){
+  if(!filteredCases.length)return;
+  currentIndex=Math.max(0,Math.min(filteredCases.length-1,currentIndex+delta));
+  renderCase();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+$("searchInput").addEventListener("input",()=>{currentIndex=0;applyFilters();});
+$("systemFilter").addEventListener("change",()=>{currentIndex=0;applyFilters();});
+$("difficultyFilter").addEventListener("change",()=>{currentIndex=0;applyFilters();});
+$("sortFilter").addEventListener("change",()=>{currentIndex=0;applyFilters();});
+$("checkBtn").addEventListener("click",checkAnswer);
+$("previousBtn").addEventListener("click",()=>move(-1));
+$("nextBtn").addEventListener("click",()=>move(1));
+$("randomBtn").addEventListener("click",()=>{
+  if(!filteredCases.length)return;
+  currentIndex=Math.floor(Math.random()*filteredCases.length);
+  renderCase();
+});
+$("resetBtn").addEventListener("click",()=>{
+  if(!confirm("Reset all answers and scores?"))return;
+  Object.keys(results).forEach(key=>delete results[key]);
+  currentIndex=0;
+  renderCase();
+  updateStats();
+});
+
+initFilters();
+applyFilters();
+updateStats();
+</script>
 </body>
 </html>
